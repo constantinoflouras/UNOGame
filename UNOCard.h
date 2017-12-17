@@ -1,9 +1,8 @@
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include <vector>
+#ifndef UNOCARD_H
+	#define UNOCARD_H
 
 using std::string;
+enum UNOColor {RED = 0, GREEN = 1, YELLOW = 2, BLUE = 3, NONE = 4};
 
 class UNOCard
 {
@@ -23,3 +22,4 @@ class UNOCard
 		//none yet
 };
 
+#endif
