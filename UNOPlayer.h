@@ -30,6 +30,7 @@ class UNOPlayer
     
     public:
         void addCard(UNOCard card);
+        UNOCard removeCard(int indexToRemove);
         string printHand();
         //void removeCard(UNOCard card);
         
@@ -40,7 +41,7 @@ class UNOPlayer
             Unavoidable, but the UNO card
         */
         void addCardToLL(UNOCard card);
-        //void removeCardFromLL();
+        UNOCard removeCardFromLL(int indexToRemove);
 };
 
 

@@ -32,11 +32,19 @@ int main()
     UNOCard testCard1 = UNOCard(6,3);
     UNOCard testCard2 = UNOCard(5,2);
     UNOCard testCard3 = UNOCard(4,1);
+    UNOCard testCard4 = UNOCard(3,0);
+    UNOCard testCard5 = UNOCard(14,4);
     player.addCard(testCard1);
     player.addCard(testCard2);
     player.addCard(testCard3);
-    
+    player.addCard(testCard4);
+    player.addCard(testCard5);
     std::cout << "PLAYER: " << player.printHand();
+    
+    player.removeCard(3);
+    std::cout << "PLAYER: " << player.printHand();
+    
+    
     return 0;
 }
 

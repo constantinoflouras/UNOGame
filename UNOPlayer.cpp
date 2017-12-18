@@ -67,6 +67,61 @@ void UNOPlayer::addCardToLL(UNOCard card)
     }
 }
 
+UNOCard UNOPlayer::removeCardFromLL(int indexToRemove)
+{
+    int currentIndex = 0;
+    UNOCard cardToReturn;
+    
+    Node * temp = hand;
+    
+    // The first thing we'll do is check and see if there's a card in the hand at all.
+    if (temp == NULL)
+    {
+        // Uh-oh. That's not good. We're trying to remove from an empty hand.
+        // I'm going to throw an exception to the program.
+        #ifdef DEBUG
+            std::cout << "DEBUG: Removing from an empty deck... error!\n";
+        #endif
+        
+        return UNOCard(4,15);
+    }
+    
+    // If we've reached this point, then there is at least one card.
+    do
+    {
+        if (currentIndex == indexToRemove)
+        {
+            // Adjust the pointers to the next one to be null.
+            cardToReturn = (*temp).card;
+            
+            // Now, we're going to handle the case of which there's a previous node.
+            if ( (*temp).prevNode != NULL )
+            {
+                // There is a previous node, so we'll take that previous node value
+                // (even if it is NULL) and set it to the new value.
+                (*(*temp).prevNode).nextNode = (*temp).nextNode;
+            }
+            
+            // Now, we're going to handle the case of which there's a next node.
+            if ( (*temp).nextNode != NULL )
+            {
+                (*(*temp).nextNode).prevNode = (*temp).prevNode;
+            }
+            
+            return cardToReturn;
+        }
+        temp = (*temp).nextNode;
+        currentIndex++;
+        
+    } while ((*temp).nextNode != NULL);
+    
+    return UNOCard(4,15);
+}
+
+UNOCard UNOPlayer::removeCard(int indexToRemove)
+{
+    return removeCardFromLL(indexToRemove);
+}
 string UNOPlayer::printHand()
 {
     string output = "";
@@ -92,3 +147,4 @@ string UNOPlayer::printHand()
     
     return output;
 }
+
