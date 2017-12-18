@@ -52,11 +52,11 @@ string UNOCard::getIdentifier()
         case 7: return "seven";
         case 8: return "eight";
         case 9: return "nine";
-        case 10: return "wilddraw (draw 4)";
-        case 11: return "wilddraw";
+        case 10: return "reverse";
+        case 11: return "skip";
         case 12: return "draw two";
-        case 13: return "skip";
-        case 14: return "reverse";
+        case 13: return "wilddraw";
+        case 14: return "wilddraw (draw 4)";
         case 15: return "emptyCard (debug only)";
         break;
     }
@@ -68,7 +68,7 @@ string UNOCard::getIdentifier()
 
 string UNOCard::toString()
 {
-    string output = getColor() + " " + getIdentifier() + "\n";
+    string output = UNOCard::getColor() + " " + UNOCard::getIdentifier();
     return output;
 }
 

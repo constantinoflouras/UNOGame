@@ -57,14 +57,22 @@ int UNOCardPile::addCard(UNOCard card)
 
 string UNOCardPile::toString()
 {
+    string output = "";
     for (int i = 0; i < UNOCardPile::numberOfCards; i++)
     {
-
-        std::cout << i << "\n";
-        std::cout << UNOCardPile::cardArray[i].toString();
-        
+        // padding
+        if (i / 10 == 0)
+        {
+            output.append(" ");
+        }
+        if (i / 100 == 0)
+        {
+            output.append(" ");
+        }
+        // end padding
+        output.append(std::to_string(i) + ": " + UNOCardPile::cardArray[i].toString() + "\n");
     }
-    return "\n";
+    return output;
 }
 
 /*
