@@ -30,6 +30,8 @@ class UNOCardPile
             if there was an error.
         */
         int addCard(UNOCard card);
+        UNOCard removeCard();
+
         string toString();
 
     private:

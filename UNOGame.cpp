@@ -28,23 +28,112 @@ int main()
     std::cout << pile.toString();
     
     // Time to add some stuff to a player! Yay!
-    UNOPlayer player;
-    UNOCard testCard1 = UNOCard(6,3);
-    UNOCard testCard2 = UNOCard(5,2);
-    UNOCard testCard3 = UNOCard(4,1);
-    UNOCard testCard4 = UNOCard(3,0);
-    UNOCard testCard5 = UNOCard(14,4);
-    player.addCard(testCard1);
-    player.addCard(testCard2);
-    player.addCard(testCard3);
-    player.addCard(testCard4);
-    player.addCard(testCard5);
-    std::cout << "PLAYER: " << player.printHand();
+    UNOPlayer player[4];
+    int numberOfPlayers = 4;
+
+    // game setup
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            player[j].addCard(pile.removeCard());
+        }
+    }
     
-    player.removeCard(3);
-    std::cout << "PLAYER: " << player.printHand();
+    for (int k = 0; k < 4; k++)
+    {
+        std::cout << "PLAYER " << k << ": " << player[k].printHand();
+    }
+
+    UNOCard onTable = pile.removeCard();
     
-    
+    while (onTable.getCardNumber() > 9)
+    {
+        // I don't want to deal with what happens when there's a function card on the table.
+        // So, I'll just put it back and randomize the deck.
+        #ifdef DEBUG
+        {
+            std::cout << "DEBUG: The current card was: " << onTable.toString() << ", but we'll pick something else.\n";
+        }
+        #endif
+
+        pile.addCard(onTable);
+        pile.shuffle();
+        onTable = pile.removeCard();
+    }
+
+    // Now that a card is on the table, we'll set up the color checking properties.
+    //UNOColor tableColor = onTable.getColorNum();
+    //nt tableNumber = onTable.getCardNumber();
+    int currentPlayer = 0;
+    // Positive is one direction, negative is another.
+    //int direction = 1;
+    int user_input = -2;
+
+    std::cout << "The current card is: " << onTable.toString() << "\n";
+    // time to play
+    while (numberOfPlayers >= 2)
+    {
+        UNOCard toTable;
+
+        std::cout << "PLAYER " << currentPlayer << ": " << player[currentPlayer].printHand() << "\n";
+
+        while (user_input <= -2)
+        {
+            std::cout << "What card would you like to play? (-1 for draw): ";
+            std::cin >> user_input;
+        }
+
+        if (user_input == -1)
+        {
+            // Reset the input.
+            user_input = -2;
+            player[currentPlayer].addCard(pile.removeCard());
+            currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+        }
+        else
+        {
+            // Try the card that the user specified.
+            toTable = player[currentPlayer].removeCard(user_input);
+
+            if (toTable.getCardNumber() == onTable.getCardNumber() || toTable.getColorNum() == onTable.getColorNum())
+            {
+                // Add the card that was on the table.
+                pile.addCard(onTable);
+
+                // Then, we'll shuffle the deck.
+                pile.shuffle();
+
+                // The card that was destined to go onto the table can now go there.
+                onTable = toTable;
+
+                // We'll clear the card that was supposed to go to the table.
+                toTable = UNOCard();
+
+                // Then, we'll increment the player. This will later be replaced with a method that considers direction.
+                currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+
+                // Output the new current card.
+                std::cout << "The current card is: " << onTable.toString() << "\n";
+
+                // Reset the user input.
+                user_input = -2;
+            }
+            else
+            {
+                player[currentPlayer].addCard(toTable);
+                std::cout << "That card didn't work. Make sure the color or number matches! \n";
+                user_input = -2;
+            }
+        }
+    }
+
+
+
+
+
+
+
     return 0;
 }
 
@@ -80,6 +169,7 @@ int initializeDeck(UNOCardPile * pile)
         (*pile).addCard( UNOCard( 13 + (identifierCounter / 4), 4) );
     }
     
-    return 0;
-    
+    return 0;   
 }
+
+

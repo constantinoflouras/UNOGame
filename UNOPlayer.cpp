@@ -6,7 +6,6 @@ UNOPlayer::UNOPlayer()
     hand = NULL;
 }
 
-
 void UNOPlayer::addCard(UNOCard card)
 {
     addCardToLL(card);
@@ -17,7 +16,7 @@ void UNOPlayer::addCardToLL(UNOCard card)
     if (hand == NULL)
     {
         #ifdef DEBUG
-            std::cout << "DEBUG: This player currently has no cards, adding a card...";
+            std::cout << "DEBUG: This player currently has no cards, adding a card...\n";
         #endif
         
         
@@ -41,7 +40,7 @@ void UNOPlayer::addCardToLL(UNOCard card)
     else
     {
         #ifdef DEBUG
-            std::cout << "DEBUG: This player already has cards, adding a card...";
+            std::cout << "DEBUG: This player already has cards, adding a card...\n";
         #endif
         /*
             There is at least one card already in the deck. We'll add to the beginning,
@@ -83,12 +82,24 @@ UNOCard UNOPlayer::removeCardFromLL(int indexToRemove)
             std::cout << "DEBUG: Removing from an empty deck... error!\n";
         #endif
         
-        return UNOCard(4,15);
+        // This is the "empty" UNOCARD.
+        return UNOCard();
     }
     
+    #ifdef DEBUG
+        std::cout << "DEBUG: Searching the linked list for the cards...\n";
+    #endif
+
+
     // If we've reached this point, then there is at least one card.
-    do
+    while (temp != NULL)
     {
+        #ifdef DEBUG
+            if (temp != NULL)
+            {    
+                std::cout << (*temp).card.toString() << "\n";
+            }
+        #endif
         if (currentIndex == indexToRemove)
         {
             // Adjust the pointers to the next one to be null.
@@ -101,6 +112,10 @@ UNOCard UNOPlayer::removeCardFromLL(int indexToRemove)
                 // (even if it is NULL) and set it to the new value.
                 (*(*temp).prevNode).nextNode = (*temp).nextNode;
             }
+            else
+            {
+                hand = (*temp).nextNode;
+            }
             
             // Now, we're going to handle the case of which there's a next node.
             if ( (*temp).nextNode != NULL )
@@ -108,14 +123,19 @@ UNOCard UNOPlayer::removeCardFromLL(int indexToRemove)
                 (*(*temp).nextNode).prevNode = (*temp).prevNode;
             }
             
+            numberOfCards--;
             return cardToReturn;
         }
         temp = (*temp).nextNode;
         currentIndex++;
-        
-    } while ((*temp).nextNode != NULL);
+    };
     
-    return UNOCard(4,15);
+    #ifdef DEBUG
+        std::cout << "DEBUG: Could not find the card... error!\n";
+    #endif
+
+    // Returns the "empty" card as a signal that the card could not be found.
+    return UNOCard();
 }
 
 UNOCard UNOPlayer::removeCard(int indexToRemove)

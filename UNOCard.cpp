@@ -81,5 +81,5 @@ UNOCard::UNOCard(int cardNumberGiven, int colorNumberGiven)
 
 UNOCard::UNOCard()
 {
-    UNOCard(0, 0);
+    UNOCard(4, 15);
 }

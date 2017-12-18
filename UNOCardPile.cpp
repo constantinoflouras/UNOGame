@@ -55,6 +55,21 @@ int UNOCardPile::addCard(UNOCard card)
     }
 }
 
+UNOCard UNOCardPile::removeCard()
+{
+    if ( (numberOfCards-1) <= 0)
+    {
+        /*
+            Nothing to return. We'll have to return the "empty" card.
+        */
+        return UNOCard();
+    }
+    else
+    {
+        return cardArray[(numberOfCards--)-1];
+    }
+}
+
 string UNOCardPile::toString()
 {
     string output = "";
