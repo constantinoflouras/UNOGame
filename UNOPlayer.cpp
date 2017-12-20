@@ -144,6 +144,8 @@ UNOCard UNOPlayer::removeCard(int indexToRemove)
 }
 string UNOPlayer::printHand()
 {
+    int counter = 0;
+
     string output = "";
     Node * temp = hand;
     
@@ -154,13 +156,17 @@ string UNOPlayer::printHand()
     
     while (temp != NULL)
     {
-        output.append( (*temp).card.toString());
+        // Append the number of the card.
+        output.append(std::to_string(counter) + ": ");
+        output.append((*temp).card.toString());
         temp = (*temp).nextNode;
         
         if (temp != NULL)
         {
             output.append(", ");
         }
+
+        counter++;
     }
     
     output.append("\n");

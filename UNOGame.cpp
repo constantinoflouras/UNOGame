@@ -70,12 +70,14 @@ int main()
     //int direction = 1;
     int user_input = -2;
 
-    std::cout << "The current card is: " << onTable.toString() << "\n";
+    
+
+    
     // time to play
     while (numberOfPlayers >= 2)
     {
         UNOCard toTable;
-
+        std::cout << "The current card is: " << onTable.toString() << "\n";
         std::cout << "PLAYER " << currentPlayer << ": " << player[currentPlayer].printHand() << "\n";
 
         while (user_input <= -2)
@@ -98,6 +100,9 @@ int main()
 
             if (toTable.getCardNumber() == onTable.getCardNumber() || toTable.getColorNum() == onTable.getColorNum())
             {
+                // This card is valid. We'll clear the screen at this time.
+                std::cout << "\033[2J\033[1;1H";
+
                 // Add the card that was on the table.
                 pile.addCard(onTable);
 
@@ -113,11 +118,36 @@ int main()
                 // Then, we'll increment the player. This will later be replaced with a method that considers direction.
                 currentPlayer = (currentPlayer + 1) % numberOfPlayers;
 
-                // Output the new current card.
-                std::cout << "The current card is: " << onTable.toString() << "\n";
-
                 // Reset the user input.
                 user_input = -2;
+
+                // Now, we'll need to check if this was an action card. We can do that appropriately here.
+
+                // The following code handles draw-two cards.
+                if (onTable.getCardNumber() == 12)
+                {
+                    // A draw-two card was played. We'll draw two cards from the deck, and add them to the next player.
+                    // Note that the next player has already been updated in currentPlayer, so we'll give them their
+                    // two cards, and then proceed to increment the player again.
+
+                    std::cout << "PLAYER " << currentPlayer << ": Draw two cards!" << "\n";
+                    
+                    // Draw two cards.
+                    player[currentPlayer].addCard(pile.removeCard());
+                    player[currentPlayer].addCard(pile.removeCard());
+
+                    // Then, we'll increment the player again.
+                    currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+                }
+
+                // After doing any card manipulation, print out ALL decks.
+                // This is debug code and should be removed.
+                for (int k = 0; k < 4; k++)
+                {
+                    std::cout << "PLAYER " << k << ": " << player[k].printHand();
+                }
+
+
             }
             else
             {
